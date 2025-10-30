@@ -1,13 +1,13 @@
-// App.js - Kampüs Film Kulübü (localStorage ile kalıcı kayıt) - MOR TEMA
+
 import React, { useEffect, useReducer, useMemo } from "react";
 import axios from "axios";
-// Google Fonts'tan şık bir font ekleyelim
+
 const styleSheet = document.createElement("style");
 styleSheet.innerText = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
 `;
 document.head.appendChild(styleSheet);
-/******************** REDUCER & ACTIONS ********************/
+
 const ACTIONS = {
   FETCH_INIT: "FETCH_INIT",
   FETCH_SUCCESS: "FETCH_SUCCESS",
@@ -23,7 +23,7 @@ const ACTIONS = {
   SET_SELECTED: "SET_SELECTED",
 };
 
-// localStorage'dan başlangıç verisi yükle
+
 const loadInitialWatchlist = () => {
   try {
     const saved = localStorage.getItem('kampus-watchlist');
@@ -36,7 +36,7 @@ const loadInitialWatchlist = () => {
 const initialState = {
   loading: false,
   error: null,
-  query: "friends",
+  query: "Plan B",
   filters: { genre: "All", language: "All", minRating: 0 },
   results: [],
   watchlist: loadInitialWatchlist(),
@@ -77,7 +77,7 @@ function reducer(state, action) {
   }
 }
 
-/******************** HELPERS ********************/
+
 function uniqueGenres(results) {
   const set = new Set();
   results.forEach((r) => {
@@ -87,7 +87,7 @@ function uniqueGenres(results) {
   return ["All", ...Array.from(set).sort()];
 }
 
-/******************** STYLES - MOR TEMA ********************/
+
 const styles = {
   button: {
     background: "linear-gradient(135deg, #9b59b6 0%, #6c3483 100%)",
@@ -126,7 +126,7 @@ const styles = {
   }
 };
 
-/******************** COMPONENTS ********************/
+
 function SearchBox({ query, onChange, onSearch }) {
   return (
     <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
@@ -431,7 +431,7 @@ function Footer() {
   );
 }
 
-/******************** HOME PAGE ********************/
+
 function Home({ state, dispatch }) {
   const { loading, error, query, filters, results, watchlist, pageSize, page, selectedShow } = state;
 
@@ -529,7 +529,7 @@ function Home({ state, dispatch }) {
   );
 }
 
-/******************** FETCH HELPER ********************/
+
 function fetchByQuery(dispatch, query) {
   dispatch({ type: ACTIONS.FETCH_INIT });
   axios
@@ -538,11 +538,11 @@ function fetchByQuery(dispatch, query) {
     .catch((err) => dispatch({ type: ACTIONS.FETCH_FAILURE, payload: err.message }));
 }
 
-/******************** APP ROOT ********************/
+
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Watchlist değiştiğinde localStorage'a kaydet
+  
   useEffect(() => {
     try {
       localStorage.setItem('kampus-watchlist', JSON.stringify(state.watchlist));
